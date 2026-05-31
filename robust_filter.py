@@ -15,23 +15,29 @@ class Filter:
         self.func = func
         self.mu = None
         self.x = None
+        self.mu_prior = None
 
     def update(self, y):
         """
         Update filter with observations.
 
         States:
-        - mu_t: predicted/filtered state estimate at time t
+        - mu_t: predicted/filtered state estimate at time t (one-step-ahead prior)
         - x_t: innovation (measurement residual) at time t
+        - mu_prior: one-step-ahead predictions (aligned with y for likelihood)
 
         Update equation: mu_{t+1} = theta * mu_t + kappa * x_t
         where x_t = func(y_t, mu_t, param_dict)
         """
         self.mu = []
         self.x = []
+        self.mu_prior = []
         mu_t = self.mu_0
 
         for y_t in y:
+            # Store the prior (one-step-ahead prediction) before using y_t
+            self.mu_prior.append(mu_t)
+
             # Compute innovation (residual)
             x_t = self.func(y_t, mu_t, self.param_dict)
             self.x.append(x_t)

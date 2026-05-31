@@ -30,8 +30,9 @@ def grid_search(y, mu_0, param_dicts, func):
         # Create filter with current parameters
         filter = Filter(mu_0, param_dict=param_dict, func=func)
         filter.update(y)
-        # Compute log-likelihood of observations given filter estimates
-        ll = log_likelihood(filter.mu, y, param_dict)
+        # Compute log-likelihood using one-step-ahead priors (mu_prior)
+        # aligned with observations for p(y_t | y_{1:t-1})
+        ll = log_likelihood(filter.mu_prior, y, param_dict)
         if ll > best_ll:
             best_ll = ll
             best_params = param_dict.copy()
