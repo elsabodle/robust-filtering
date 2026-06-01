@@ -43,7 +43,7 @@ class Filter:
             self.x.append(x_t)
 
             # Update state estimate: weighted combination of previous state and innovation
-            mu_next = self.param_dict["theta"] * mu_t + self.param_dict["kappa"] * x_t
+            mu_next = self.param_dict["phi"] * mu_t + self.param_dict["kappa"] * x_t
             self.mu.append(mu_next)
 
             # Propagate state for next iteration
